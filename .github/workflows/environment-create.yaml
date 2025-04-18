@@ -20,7 +20,7 @@ on:
         required: true
 
 jobs:
-  destroy-api:
+  Create Environment:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code

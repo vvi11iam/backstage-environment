@@ -35,10 +35,10 @@ jobs:
 
     - name: Delete GitHub Repository
       run: |
-        echo "Deleting GitHub Repository $componentRepoName"
+        echo "Deleting GitHub Repository ${{ github.event.inputs.componentRepoName }}"
         curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-        https://api.github.com/repos/$componentRepoOwner/$componentRepoName
-        echo "GitHub Repository $componentRepoName deleted"
+        https://api.github.com/repos/${{ github.event.inputs.componentRepoOwner }}/${{ github.event.inputs.componentRepoName }}
+        echo "GitHub Repository ${{ github.event.inputs.componentRepoName }} deleted"
 
     # - name: Unregister subdomain from Route53
     #   run: |
