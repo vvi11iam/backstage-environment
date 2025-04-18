@@ -1,0 +1,54 @@
+name: Create an Environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      # clusterName:
+      #   description: 'The Name of the cluster to be created'
+      #   required: true
+      # awsRegion:  
+      #   description: 'The AWS region to create the cluster in'
+      #   required: true
+      environmentName:
+        description: 'The Name of the repository to be created'
+        required: true
+      feImage:
+        description: 'The tag of the FE image to be used'
+        required: true
+      beImage:
+        description: 'The tag of the BE image to be used'
+        required: true
+
+jobs:
+  destroy-api:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    # - name: Setup Terraform
+    #   uses: hashicorp/setup-terraform@v1
+    #   with:
+    #     cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+    # - name: Terraform Init
+    #   run: terraform init
+    #   working-directory: Terraform
+    # - name: Terraform FMT
+    #   run: terraform fmt
+    #   working-directory: Terraform
+    # - name: Terraform Validate
+    #   run: terraform validate
+    #   working-directory: Terraform
+    # - name: Terraform Destroy
+    #   run: terraform destroy -var clusterName=${{ github.event.inputs.clusterName }} -auto-approve
+    #   # run: terraform destroy -var clusterName=${{ github.event.inputs.clusterName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -auto-approve
+    #   working-directory: Terraform
+    - name: Deploy FE & BE app
+      run: |
+        echo "Deploying FE & BE app"
+        echo "FE image: ${{ github.event.inputs.feImage }}"
+        echo "BE image: ${{ github.event.inputs.beImage }}"
+        # docker build -t ${{ github.event.inputs.feImage }} -f Dockerfile .
+        # docker build -t ${{ github.event.inputs.beImage }} -f Dockerfile .
+        # docker push ${{ github.event.inputs.feImage }}
+        # docker push ${{ github.event.inputs.beImage }}
+        echo "FE & BE app deployed"
