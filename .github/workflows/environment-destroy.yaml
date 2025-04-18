@@ -3,8 +3,8 @@ name: Destroy an Environment
 on:
   workflow_dispatch:
     inputs:
-      componentRepoName: 
-        description: 'The Name of the repository to be destroyed'
+      componentId: 
+        description: 'The Backstage Component to be destroyed'
         required: true
       componentRepoOwner:
         description: 'The Owner of the repository to be destroyed'
@@ -35,10 +35,11 @@ jobs:
 
     - name: Delete GitHub Repository
       run: |
-        echo "Deleting GitHub Repository ${{ github.event.inputs.componentRepoName }}"
+        componentRepoName=$(echo "${{ github.event.inputs.componentId }}" | sed -n 's/.*owner=\([^&]*\).*/\1/p')
+        echo "Deleting GitHub Repository $componentRepoName"
         curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-        https://api.github.com/repos/${{ github.event.inputs.componentRepoOwner }}/${{ github.event.inputs.componentRepoName }}
-        echo "GitHub Repository ${{ github.event.inputs.componentRepoName }} deleted"
+        https://api.github.com/repos/${{ github.event.inputs.componentRepoOwner }}/ $componentRepoName
+        echo "GitHub Repository $componentRepoName deleted"
 
     # - name: Unregister subdomain from Route53
     #   run: |
