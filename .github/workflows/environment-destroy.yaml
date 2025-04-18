@@ -35,7 +35,7 @@ jobs:
 
     - name: Delete GitHub Repository
       run: |
-        componentRepoName=$(echo "${{ github.event.inputs.componentId }}" | sed -n 's/component:default\/\([^&]*\).*/\1/')
+        componentRepoName=$(echo "${{ github.event.inputs.componentId }}" | sed -n 's/component:default\/\([^&]*\).*/\1/p')
         echo "Deleting GitHub Repository $componentRepoName"
         curl -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
         https://api.github.com/repos/${{ github.event.inputs.componentRepoOwner }}/ $componentRepoName
