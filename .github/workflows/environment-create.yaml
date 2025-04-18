@@ -20,7 +20,7 @@ on:
         required: true
 
 jobs:
-  Create Environment:
+  create:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
