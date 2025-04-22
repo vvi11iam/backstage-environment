@@ -13,6 +13,10 @@ on:
         description: 'The tag of the BE image to be used'
         required: true
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   create:
     runs-on: ubuntu-latest
