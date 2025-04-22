@@ -7,12 +7,9 @@ terraform {
   }
   backend "s3" {
     bucket = "will-learn-terraform-backend"
-    # key    = "backstage-${var.environmentName}.tfstate"
+    key    = "backstage.tfstate" #dummy key
     region = "us-east-1"
     use_lockfile = true
-    assume_role = {
-      role_arn = "arn:aws:iam::163012391439:role/backstage-terraform-backend"
-    }
   }
 }
 
