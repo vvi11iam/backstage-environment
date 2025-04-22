@@ -3,12 +3,6 @@ name: Create an Environment
 on:
   workflow_dispatch:
     inputs:
-      # clusterName:
-      #   description: 'The Name of the cluster to be created'
-      #   required: true
-      # awsRegion:  
-      #   description: 'The AWS region to create the cluster in'
-      #   required: true
       environmentName:
         description: 'The Name of the repository to be created'
         required: true
@@ -27,28 +21,31 @@ jobs:
       uses: actions/checkout@v2
     # - name: Setup Terraform
     #   uses: hashicorp/setup-terraform@v1
-    #   with:
-    #     cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-    # - name: Terraform Init
-    #   run: terraform init
-    #   working-directory: Terraform
-    # - name: Terraform FMT
-    #   run: terraform fmt
-    #   working-directory: Terraform
-    # - name: Terraform Validate
-    #   run: terraform validate
-    #   working-directory: Terraform
-    # - name: Terraform Destroy
-    #   run: terraform destroy -var clusterName=${{ github.event.inputs.clusterName }} -auto-approve
-    #   # run: terraform destroy -var clusterName=${{ github.event.inputs.clusterName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -auto-approve
-    #   working-directory: Terraform
-    - name: Deploy FE & BE app
-      run: |
-        echo "Deploying FE & BE app"
-        echo "FE image: ${{ github.event.inputs.feImage }}"
-        echo "BE image: ${{ github.event.inputs.beImage }}"
-        # docker build -t ${{ github.event.inputs.feImage }} -f Dockerfile .
-        # docker build -t ${{ github.event.inputs.beImage }} -f Dockerfile .
-        # docker push ${{ github.event.inputs.feImage }}
-        # docker push ${{ github.event.inputs.beImage }}
-        echo "FE & BE app deployed"
+      # with:
+        # cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+    - name: Terraform Init
+      run: terraform init
+      working-directory: Terraform
+    - name: Terraform FMT
+      run: terraform fmt
+      working-directory: Terraform
+    - name: Terraform Validate
+      run: terraform validate
+      working-directory: Terraform
+    - name: Terraform Apply
+      env:
+        TF_VAR_feImage: ${{ github.event.inputs.feImage }}
+        TF_VAR_beImage: ${{ github.event.inputs.beImage }}
+        TF_VAR_environmentUrl: http://${{ github.event.inputs.environmentName }}.example.com
+        # HCP_WORKSPACE_ID: ${{ secrets.HCP_WORKSPACE_ID }}
+      run: terraform apply -auto-approve
+      # run: terraform apply -var clusterName=${{ github.event.inputs.clusterName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -auto-approve
+      working-directory: Terraform
+
+    # # Dummy deployment step
+    # - name: Deploy FE & BE app
+    #   run: |
+    #     echo "Deploying FE & BE app"
+    #     echo "FE image: ${{ github.event.inputs.feImage }}"
+    #     echo "BE image: ${{ github.event.inputs.beImage }}"
+    #     echo "FE & BE app deployed"
